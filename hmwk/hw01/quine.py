@@ -1,0 +1,1 @@
+s="print('s = ' + s+ 'eval(s)')" ; eval(s)
