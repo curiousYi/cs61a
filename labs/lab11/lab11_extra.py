@@ -16,8 +16,13 @@ def hailstone(n):
     2
     1
     """
-    "*** YOUR CODE HERE ***"
-
+    while n != 1:
+        yield n
+        if n % 2 == 0:
+            n = int(n / 2)
+        elif n != 1:
+            n = int(n * 3 + 1)
+    yield n
 # Q7
 def repeated(t, k):
     """Return the first value in iterable T that appears K times in a row.
