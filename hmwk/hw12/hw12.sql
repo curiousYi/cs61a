@@ -44,14 +44,17 @@ CREATE TABLE by_height AS
 
 -- Sentences about siblings that are the same size
 CREATE TABLE sentences AS
-  with same_size (sib1, sib2) as
+  with same_size (sib1, sib2, size) as
     (SELECT 
-      dogs.name, doggo.name
-      FROM dogs, dogs as doggo, parents, parents as doggo_parents, size_of_dogs, size_of_dogs as size_of_doggos
-      WHERE dogs.name = parents.child AND doggo.name = doggo_parents.child AND parents.parent = doggo_parents.parent and dogs.name <> doggo.name
+      dogs.name, doggo.name, size_of_dogs.size
+      FROM dogs, dogs as doggo, parents, parents as doggo_parents,
+      size_of_dogs, size_of_dogs as size_of_doggos
+      WHERE dogs.name = parents.child AND doggo.name = doggo_parents.child AND dogs.name < doggo.name
       AND dogs.name = size_of_dogs.name AND doggo.name = size_of_doggos.name AND size_of_doggos.size = size_of_dogs.size
+      AND parents.parent = doggo_parents.parent
+      ORDER BY size_of_doggos.size
     )
-  SELECT * FROM same_size;
+  SELECT sib1 || ' and ' || sib2 || ' are ' || size || ' siblings' FROM same_size;
 
 -- Ways to stack 4 dogs to a height of at least 170, ordered by total height
 CREATE TABLE stacks AS
