@@ -61,9 +61,9 @@ CREATE TABLE stacks AS
   WITH heights(names_so_far, number_of_dogs, last_height, total_height) as (
     SELECT name, 1, height, height FROM dogs 
     UNION
-    SELECT names_so_far || ', ' || name, number_of_dogs + 1, height, total_height + height
+    SELECT names_so_far || ',' || name, number_of_dogs + 1, height, total_height + height
     FROM dogs, heights
     WHERE number_of_dogs <= 3
     AND height > last_height
   )
-  SELECT names_so_far, total_height FROM heights WHERE total_height >= 170 ORDER BY total_height;
+  SELECT * FROM heights;
