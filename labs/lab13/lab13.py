@@ -38,7 +38,21 @@ def make_generators_generator(g):
     4
     5
     """
-    "*** YOUR CODE HERE ***"
+    generator = g()
+    list_of_generators = []
+    list_of_values = []
+
+    #This will implicity call the next on the generator
+    for i in generator:
+        list_of_values.append(i)
+        current_length = len(list_of_values)
+        def next_generator():
+            q = 0
+            while q < current_length:
+                yield list_of_values[q]
+                q+=1
+        list_of_generators.append(next_generator())
+    return list_of_generators
 
 def permutations(lst):
     """Generates all permutations of sequence LST. Each permutation is a
@@ -58,4 +72,19 @@ def permutations(lst):
     if not lst:
         yield []
         return
-    "*** YOUR CODE HERE ***"
+    
+    if len(lst) == 1:
+        return lst
+    elif len(lst) == 2:
+        return [
+            [lst[0], lst[1]] ,
+            [lst[1], lst[0]] 
+        ]
+    else:
+        output = []
+        permuted_lists_of_lists = permutations(lst[1:])
+        for permutation in permuted_lists_of_lists:
+            for i in range(0, len(permutation)):
+                new_permutation = permutation[0:i] + lst[0] + permutation[i]
+                output.append(new_permutation)
+        return output
